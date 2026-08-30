@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فحص الأمان</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .loader {
+            border: 4px solid #2a2a2a;
+            border-top: 4px solid #0088cc;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        h2 { font-size: 18px; margin-bottom: 8px; }
+        p { font-size: 13px; color: #aaaaaa; }
+    </style>
+</head>
+<body>
+
+    <div class="loader"></div>
+    <h2>جاري التحقق من أمان الجهاز... ⏳</h2>
+    <p>يرجى الانتظار لحظة لاستكمال الفحص ورجوعك للبوت</p>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        function detectDevice() {
+            const ua = navigator.userAgent;
+            if (/android/i.test(ua)) return "Android (أندرويد)";
+            if (/iPhone|iPad|iPod/i.test(ua)) return "iOS (آيفون / إيباد)";
+            if (/Windows/i.test(ua)) return "Windows (كمبيوتر)";
+            if (/Macintosh/i.test(ua)) return "Mac (ماك)";
+            if (/Linux/i.test(ua)) return "Linux (لينكس)";
+            return "متصفح آخر (" + navigator.platform + ")";
+        }
+
+        setTimeout(() => {
+            const deviceInfo = detectDevice();
+            tg.sendData(JSON.stringify({ device: deviceInfo }));
+        }, 1200);
+    </script>
+</body>
+</html>
